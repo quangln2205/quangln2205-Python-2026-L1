@@ -1,0 +1,65 @@
+[
+  {
+    "student_id": "S001",
+    "name": "Alice",
+    "marks": [
+      {
+        "subject": "Math",
+        "credit": 3,
+        "mark": 8.7
+      },
+      {
+        "subject": "Physics",
+        "credit": 2,
+        "mark": 7.6
+      },
+      {
+        "subject": "English",
+        "credit": 2,
+        "mark": 9.4
+      }
+    ]
+  },
+  {
+    "student_id": "S002",
+    "name": "Bob",
+    "marks": [
+      {
+        "subject": "Math",
+        "credit": 3,
+        "mark": 6.9
+      },
+      {
+        "subject": "Physics",
+        "credit": 2,
+        "mark": 8.4
+      },
+      {
+        "subject": "English",
+        "credit": 2,
+        "mark": 7.3
+      }
+    ]
+  },
+  {
+    "student_id": "S003",
+    "name": "Charlie",
+    "marks": [
+      {
+        "subject": "Math",
+        "credit": 3,
+        "mark": 9.9
+      },
+      {
+        "subject": "Physics",
+        "credit": 2,
+        "mark": 8.5
+      },
+      {
+        "subject": "English",
+        "credit": 2,
+        "mark": 8.1
+      }
+    ]
+  }
+]

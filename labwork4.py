@@ -2,27 +2,9 @@
 
 import gzip
 import pickle
-import importlib
-import importlib.util
-import sys
 from pathlib import Path
 
-
-MODULE_DIR = Path(__file__).with_name("labwork3-ex4.py")
-MODULE_PACKAGE = "student_modules"
-if MODULE_PACKAGE not in sys.modules:
-    spec = importlib.util.spec_from_file_location(
-        MODULE_PACKAGE,
-        MODULE_DIR / "__init__.py",
-        submodule_search_locations=[str(MODULE_DIR)],
-    )
-    package = importlib.util.module_from_spec(spec)
-    sys.modules[MODULE_PACKAGE] = package
-    spec.loader.exec_module(package)
-
-Student = importlib.import_module(f"{MODULE_PACKAGE}.domains").Student
-input_module = importlib.import_module(f"{MODULE_PACKAGE}.input")
-output = importlib.import_module(f"{MODULE_PACKAGE}.output")
+from labwork3 import Student, demo_students, show_students
 
 
 DATA_FILE = Path(__file__).with_name("students.dat")
@@ -37,7 +19,7 @@ def save_students(students, filename=DATA_FILE):
 def load_students(filename=DATA_FILE):
     """Load student data if the compressed data file exists."""
     if not Path(filename).exists():
-        return input_module.demo_students()
+        return demo_students()
 
     try:
         with gzip.open(filename, "rb") as file:
@@ -47,7 +29,35 @@ def load_students(filename=DATA_FILE):
     except (OSError, pickle.PickleError, EOFError, ValueError) as error:
         print(f"Could not load {filename.name}: {error}")
         print("Starting with demo data.")
-        return input_module.demo_students()
+        return demo_students()
+
+
+def add_student(students):
+    student_id = input("Enter student ID: ")
+    name = input("Enter student name: ")
+    students.append(Student(student_id, name))
+
+
+def add_mark(students):
+    student_id = input("Enter student ID to add marks: ")
+    student = next((item for item in students if item.student_id == student_id), None)
+    if student is None:
+        print("Student ID not found.")
+        return
+    subject = input("Enter subject: ")
+    credit = float(input("Enter credit: "))
+    mark = float(input("Enter mark: "))
+    student.add_mark(subject, credit, mark)
+    print("Mark added successfully.")
+
+
+def show_student_gpa(students):
+    student_id = input("Enter student ID: ")
+    student = next((item for item in students if item.student_id == student_id), None)
+    if student is None:
+        print("Student ID not found.")
+    else:
+        print(f"{student.name}'s GPA is: {student.gpa():.2f}")
 
 
 def run():
@@ -65,16 +75,16 @@ def run():
 
         try:
             if choice == "1":
-                input_module.add_student(students)
+                add_student(students)
                 print("Student added successfully!")
             elif choice == "2":
-                input_module.add_mark(students)
+                add_mark(students)
             elif choice == "3":
-                output.show_students(students)
+                show_students(students)
             elif choice == "4":
-                output.show_student_gpa(students)
+                show_student_gpa(students)
             elif choice == "5":
-                students = input_module.demo_students()
+                students = demo_students()
                 print("Demo data loaded.")
             elif choice == "0":
                 save_students(students)
